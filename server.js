@@ -40,8 +40,8 @@ function addMovieHandel(req,res){
   const movie=req.body;
   console.log(movie)
   // const sql=`INSERT into movies (id,title,release_date,path,overview) values ('${movie.id}','${movie.title}','${movie.release_date}','${movie.path}','${movie.oneMovie}');`;
-  const sql = `INSERT into movies (id,title,release_date,path,overview) values ($1,$2,$3,$4,$5) RETURNING *;`;
-  const values=[movie.id,movie.title,movie.release_date,movie,movie.path,movie.overview];
+  const sql = `INSERT into movies (title,release_date,path,overview) values ($1,$2,$3,$4) RETURNING *;`;
+  const values=[movie.title,movie.release_date,movie.path,movie.overview];
   client.query(sql,values).then((data)=>{
     res.status(201).send(data.rows);
   })

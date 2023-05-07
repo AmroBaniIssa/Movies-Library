@@ -1,0 +1,1 @@
+INSERT into movies (id,title,release_date,path,overview) values (`640146`,`Quantumania`,`2023-02-15`,`/ngl2FKBlU4fhbdsrtdom9LVLBXw.jpg`,`Super-Hero partners Scott Lang and Hope van Dyne, along with with Hope's parents Janet van Dyne and Hank Pym, and Scott's daughter Cassie Lang, find themselves exploring the`);`;

@@ -30,9 +30,10 @@ app.get("/nameofmovie",handlenameofmovie)
 app.get("/discovertv",handleDiscoverTv)
 app.get("/trending",handelTrending)
 app.get("/getmovies",getMoviesHandel)
-app.post("/addmovie",addMovieHandel)
-app.delete("/addmovie",deleteMovieHandel)
-app.put("/addmovie",updateMovieHandel)
+app.get("/getmovie/:id",getMovieOneHandel)
+app.post("/addemovie",addMovieHandel)
+app.delete("/deletemovie/:id",deleteMovieHandel)
+app.put("/updatemovie/:id",updateMovieHandel)
 
 
 // handlers ===============
@@ -42,10 +43,27 @@ function handleHome(req,res){
 }
 
 function deleteMovieHandel(req,res){
-
+   const movieid =req.params.id;
+   const sql=`delete from movies where id=${movieid} ; `
+   client.query(sql).then((data)=>{
+      res.status(202).send('deleted')
+   })
+}
+function getMovieOneHandel(req,res){
+  const movieid =req.params.id;
+  const sql=`select * from movies where id=${movieid};`
+  // console.log(sql)
+  client.query(sql).then((data)=>{
+    res.status(200).json(data.rows);
+  })
 }
 function updateMovieHandel(req,res){
-
+  const movieid =req.params.id;
+  const sql=`update movies set title=$1,release_date=$2,path=$3,overview=$4 where id=${movieid} ; `
+  const values=[req.body.title,req.body.release_date,req.bode.path,req.bode.overview];
+  client.query(sql,values).then((data)=>{
+    res.status(200).send(data.rows);
+  })
 }
 function addMovieHandel(req,res){
   const movie=req.body;
@@ -61,7 +79,7 @@ function addMovieHandel(req,res){
 function getMoviesHandel(req,res){
    const sql = 'select * from movies;';
    client.query(sql).then((data)=>{
-    res.send(data.rows);
+    // res.send(data.rows);
     let moviesFromDB = data.rows.map((item)=>{
       let oneMovie= new Movie(
         item.id,
@@ -72,7 +90,7 @@ function getMoviesHandel(req,res){
       )
       return oneMovie;
     })
-    res.send(moviesFromDB);
+    res.status(200).send(moviesFromDB);
    })
 }
 

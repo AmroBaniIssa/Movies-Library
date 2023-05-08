@@ -31,9 +31,20 @@ app.get("/discovertv",handleDiscoverTv)
 app.get("/trending",handelTrending)
 app.get("/getmovies",getMoviesHandel)
 app.post("/addmovie",addMovieHandel)
+app.delete("/addmovie",deleteMovieHandel)
+app.put("/addmovie",updateMovieHandel)
+
+
 // handlers ===============
 function handleHome(req,res){
   res.send("Welcome to MoviesFinder");
+
+}
+
+function deleteMovieHandel(req,res){
+
+}
+function updateMovieHandel(req,res){
 
 }
 function addMovieHandel(req,res){

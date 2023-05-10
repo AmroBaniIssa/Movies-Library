@@ -5,12 +5,13 @@ const cors = require("cors");
 const axios=require("axios");
 const app = express();
 const moviesData = require("./data.json");
-const port = 3001;
+// const port = 3001;
 const pg = require("pg");
 const client = new pg.Client(process.env.DATABASE_URL);
 app.use(cors());
 app.use(express.json());
 const MoviesKey = process.env.API_KEY;
+const port=process.env.PORT;
 // let result=[];
 function Movie(id,title,release_date, path, overview) {
   this.id=id;
@@ -145,6 +146,6 @@ function InternalServerError(req, res) {
 client.connect().then(()=>{
 
   app.listen(port, () => {
-    console.log(`server is listining ${port}`);
+    console.log(`server is listining on port`,port);
   });
 })

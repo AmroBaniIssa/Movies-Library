@@ -13,11 +13,11 @@ app.use(express.json());
 const MoviesKey = process.env.API_KEY;
 const port=process.env.PORT;
 // let result=[];
-function Movie(id,title,release_date, path, overview) {
+function Movie(id,title,release_date, image_path, overview) {
   this.id=id;
   this.title = title;
   this.release_date=release_date;
-  this.path = path;
+  this.image_path = image_path;
   this.overview = overview;
   // result.push(this);
 }
@@ -34,7 +34,7 @@ app.get("/getmovies",getMoviesHandel)
 app.get("/getmovie/:id",getMovieOneHandel)
 app.post("/addemovie",addMovieHandel)
 app.delete("/deletemovie/:id",deleteMovieHandel)
-// app.put("/updatemovie/:id",updateMovieHandel)
+app.put("/updatemovie/:id",updateMovieHandel)
 
 
 // handlers ===============
@@ -58,20 +58,20 @@ function getMovieOneHandel(req,res){
     res.status(200).json(data.rows);
   })
 }
-// function updateMovieHandel(req,res){
-//   const movieid =req.params.id;
-//   const sql=`update movies set title=$1,release_date=$2,path=$3,overview=$4 where id=${movieid} ; `
-//   const values=[req.body.title,req.body.release_date,req.bode.path,req.bode.overview];
-//   client.query(sql,values).then((data)=>{
-//     res.status(200).send(data.rows);
-//   })
-// }
+function updateMovieHandel(req,res){
+  const movieid =req.params.id;
+  const sql=`update movies set title=$1,release_date=$2,image_path=$3,overview=$4 where id=${movieid} ; `
+  const values=[req.body.title,req.body.release_date,req.body.image_path,req.body.overview];
+  client.query(sql,values).then((data)=>{
+    res.status(200).send(data.rows);
+  })
+}
 function addMovieHandel(req,res){
   const movie=req.body;
   console.log(movie)
   // const sql=`INSERT into movies (id,title,release_date,path,overview) values ('${movie.id}','${movie.title}','${movie.release_date}','${movie.path}','${movie.oneMovie}');`;
-  const sql = `INSERT into movies (title,release_date,path,overview) values ($1,$2,$3,$4) RETURNING *;`;
-  const values=[movie.title,movie.release_date,movie.path,movie.overview];
+  const sql = `INSERT into movies (title,release_date,image_path,overview) values ($1,$2,$3,$4) RETURNING *;`;
+  const values=[movie.title,movie.release_date,movie.image_path,movie.overview];
   client.query(sql,values).then((data)=>{
     res.status(201).send(data.rows);
   })
@@ -86,7 +86,7 @@ function getMoviesHandel(req,res){
         item.id,
         item.title,
         item.release_date,
-        item.path,
+        item.image_path,
         item.overview
       )
       return oneMovie;
